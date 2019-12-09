@@ -20,7 +20,7 @@
     if('key' in evt) isSpace = (evt.key == ' ' || evt.key == 'Spacebar');
     else if ('code' in evt) isSpace = (evt.code == 32);
 
-    if(isSpace && (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    if(isSpace && (window.innerHeight + window.pageYOffset) >= document.body.scrollHeight) {
       //init
       fetch('https://anemochore.github.io/please-space-next-auto-pager/settings.json')
       .then(response => response.json())
