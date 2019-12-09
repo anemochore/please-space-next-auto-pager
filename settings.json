@@ -1,7 +1,7 @@
 {
   "default": {
     "isPageInTheURL": true,
-    "param": "p"
+    "param": "page"
   },
   "www.google.com": {
     "isPageInTheURL": false,
@@ -24,5 +24,17 @@
     "isPageInTheURL": false,
     "curPage": "input[name=\"pageNumber\"]",
     "func": "_go_targetPage()"
+  },
+  "www.yes24.com": {
+    "isPageInTheURL": true,
+    "param": "PageNumber"
+  },
+  "search.daum.net": {
+    "isPageInTheURL": true,
+    "param": "p"
+  },
+  "github.com": {
+    "isPageInTheURL": true,
+    "param": "p"
   }
 }
