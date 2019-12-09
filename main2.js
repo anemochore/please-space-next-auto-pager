@@ -30,9 +30,7 @@
         let FUZZY = [];
         FUZZY = [
           'page',        //알라딘, 반디, 스오
-          'p',           //깃허브, 다음
-          'PageNumber',  //예스24
-        ];
+        ];  //todo
 
         let setting = SETTING['default'];
         let host = location.host;
@@ -53,13 +51,13 @@
           let nextPage;
           if(!curPage) {
             nextPage = 2;
-            idx = 0;  //try first param only to prevent probably unsuccessful loading and checking. todo: nevertheless try!
+            idx = 0;  //try first param only to prevent probably unsuccessful loading and checking. todo: ...
           }
           else {
             nextPage = parseInt(curPage) + 1;
           }
           params.set(possibleParams[idx], nextPage);
-          window.location.href = location.origin + location.pathname + '?' + params.toString();
+          window.location.href = location.origin + location.pathname + '?' + params.toString(); //no error check
           return;
         }
         else {
