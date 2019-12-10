@@ -39,5 +39,9 @@
     "isPageInTheURL": false,
     "curPage": "strong.on",
     "func": "fnCmdExampleList()"
+  },
+  "www.ebay.com": {
+    "isPageInTheURL": true,
+    "param": "_pgn"
   }
 }
