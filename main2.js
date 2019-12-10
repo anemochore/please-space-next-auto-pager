@@ -1,15 +1,19 @@
 // ==UserScript==
-// @name         please space next auto pager
-// @namespace    https://anemochore.github.io/please-space-next-auto-pager/
-// @version      0.1
-// @description  press space at the end of page to load next page
-// @author       fallensky@naver.com
-// @include      *
-// @grant        none
+// @name          please space next auto pager
+// @namespace     https://anemochore.github.io/please-space-next-auto-pager/
+// @version       0.2
+// @description   press space at the end of page to load next page
+// @author        fallensky@naver.com
+// @include       *
+// @updateURL     https://anemochore.github.io/please-space-next-auto-pager/main2.js
+// @downloadURL   https://anemochore.github.io/please-space-next-auto-pager/main2.js
+// @grant         none
 // ==/UserScript==
 
 // ver 0.1 @ 2019-12-09
-//  first experiment. fuzzy setting not implemented
+//    first experiment. fuzzy setting not implemented
+// ver 0.2 @ 2019-12-10
+//    small fixes
 
 
 //(() => {
@@ -26,7 +30,7 @@
       .then(response => response.json())
       .then(SETTING => {
 
-         //fuzzy settings
+        //fuzzy settings
         let FUZZY = [];
         FUZZY = [
           'page',        //알라딘, 반디, 스오
@@ -36,7 +40,7 @@
         let host = location.host;
         if(host in SETTING) setting = SETTING[host];
 
-        if(setting.isPageInTheURL) {
+        if('isPageInTheURL' in setting && setting.isPageInTheURL) {
           let possibleParams = FUZZY.slice();
           if(setting.param && possibleParams.indexOf(setting.param) == -1)
              possibleParams.unshift(setting.param);
@@ -60,7 +64,7 @@
           window.location.href = location.origin + location.pathname + '?' + params.toString(); //no error check
           return;
         }
-        else {
+        else if('isPageInTheURL' in setting && !setting.isPageInTheURL) {
           let curPage = ('curPage' in setting && setting.curPage);
           let nextPageEl = ('nextPageEl' in setting && setting.nextPageEl);
           if(curPage && nextPageEl) {
