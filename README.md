@@ -17,6 +17,7 @@
 ## 설치
 1. 탬퍼멍키가 없다면 설치한다. 참고로 파폭에서만 테스트했다. [파폭](https://addons.mozilla.org/ko/firefox/addon/tampermonkey/), [크롬](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=ko)
 2. 탬퍼멍키에 [`main2.js`](https://anemochore.github.io/please-space-next-auto-pager/main2.js) 파일을 추가한다(새 유저 스크립트 > 내용 복붙). 다른 설정은 바꿀 것 없다.
+3. 이후 종종 업데이트를 확인하자.
 
 ## todo
 1. 사이트별 설정을 만들어주는 마법사를 만들자.
@@ -24,3 +25,4 @@
 3. 마법사로 생성한 json 설정을 사용자들이 이슈로 올리면, 봇을 돌려 통합하면 좋을까 싶은데 가능할지 모르겠다.
 4. 뭔가 사이트를 일일이 수동으로 지정하지 않고도 자동으로 인식할 방법이 있으면 얼마나 좋을까 싶음.
 5. 의문. 현재 모든 사이트에서 작동하게 해놨는데, 지원하는 사이트에서만 작동하게 바꿔야 할까?
+6. 설치를 이렇게 복붙으로 하지 말고 뭔가 공식적인 방법으로 하게 해야...
