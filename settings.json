@@ -34,5 +34,10 @@
   "github.com": {
     "isPageInTheURL": true,
     "param": "p"
+  },
+  "kornorms.korean.go.kr": {
+    "isPageInTheURL": false,
+    "curPage": "strong.on",
+    "func": "fnCmdExampleList()"
   }
 }
