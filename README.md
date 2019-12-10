@@ -16,8 +16,7 @@
 
 ## 설치
 1. 탬퍼멍키가 없다면 설치한다. 참고로 파폭에서만 테스트했다. [파폭](https://addons.mozilla.org/ko/firefox/addon/tampermonkey/), [크롬](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=ko)
-2. 탬퍼멍키에 `main2.js` 파일을 추가한다(새 유저 스크립트 > 내용 복붙). 다른 설정은 바꿀 것 없다.
-3. [해당 파일의 깃허브 주소](https://anemochore.github.io/please-space-next-auto-pager/main2.js)를 '업데이트 URL'에 쓰면 쉽게 업데이트 가능(아마도).
+2. 탬퍼멍키에 [`main2.js`](https://anemochore.github.io/please-space-next-auto-pager/main2.js) 파일을 추가한다(새 유저 스크립트 > 내용 복붙). 다른 설정은 바꿀 것 없다.
 
 ## todo
 1. 사이트별 설정을 만들어주는 마법사를 만들자.
