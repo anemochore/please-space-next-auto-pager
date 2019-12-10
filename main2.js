@@ -36,7 +36,6 @@
           'page',        //알라딘, 반디, 스오
         ];  //todo
 
-        SETTING = 
         let setting = SETTING['default'];
         let host = location.host;
         if(host in SETTING) setting = SETTING[host];
