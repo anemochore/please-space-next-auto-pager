@@ -40,6 +40,10 @@
     "curPage": "strong.on",
     "func": "fnCmdExampleList()"
   },
+  "www.ebay.com": {
+    "isPageInTheURL": true,
+    "param": "_pgn"
+  },
   "www.aladin.co.kr": {
     "isPageInTheURL": true,
     "param": "page"
