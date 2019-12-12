@@ -39,5 +39,17 @@
     "isPageInTheURL": false,
     "curPage": "strong.on",
     "func": "fnCmdExampleList()"
+  },
+  "www.aladin.co.kr": {
+    "isPageInTheURL": true,
+    "param": "page"
+  },
+  "www.bandinlunis.com: {
+    "isPageInTheURL": true,
+    "param": "page"
+  },
+  "stackoverflow.com": {
+    "isPageInTheURL": true,
+    "param": "page"
   }
 }

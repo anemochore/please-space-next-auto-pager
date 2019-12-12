@@ -33,7 +33,7 @@
         //fuzzy settings
         let FUZZY = [];
         FUZZY = [
-          'page',        //알라딘, 반디, 스오
+          'page',        //not used for now
         ];  //todo
 
         let setting = SETTING['default'];
