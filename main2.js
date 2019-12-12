@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://anemochore.github.io/please-space-next-auto-pager/
-// @version       0.2
+// @version       0.3
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -14,17 +14,22 @@
 //    first experiment. fuzzy setting not implemented
 // ver 0.2 @ 2019-12-10
 //    small fixes
+// ver 0.3 @ 2019-12-12
+//    activates only when the focus is on 'body'
 
 
 //(() => {
   document.onkeydown = evt => {
     evt = evt || window.event;
-
     let isSpace = false;
     if('key' in evt) isSpace = (evt.key == ' ' || evt.key == 'Spacebar');
     else if ('code' in evt) isSpace = (evt.code == 32);
+    
+    let isFocusOnBody = false;
+    let curEl = document.activeElement;
+    if(curEl && curEl.tagName.toLowerCase() == 'body') isFocusOnBody = true;
 
-    if(isSpace && (window.innerHeight + window.pageYOffset) >= document.body.scrollHeight) {
+    if(isSpace && isFocusOnBody && window.innerHeight + window.pageYOffset >= document.body.scrollHeight) {
       //init
       fetch('https://anemochore.github.io/please-space-next-auto-pager/settings.json')
       .then(response => response.json())
