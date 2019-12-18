@@ -55,5 +55,9 @@
   "stackoverflow.com": {
     "isPageInTheURL": true,
     "param": "page"
+  },
+    "relizm.com": {
+    "isPageInTheURL": true,
+    "param": "page"
   }
 }
