@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://anemochore.github.io/please-space-next-auto-pager/
-// @version       0.4
+// @version       0.4b
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
 // @updateURL     https://anemochore.github.io/please-space-next-auto-pager/main2.js
 // @downloadURL   https://anemochore.github.io/please-space-next-auto-pager/main2.js
-// @grant         none
+// @grant         GM_xmlhttpRequest
+// @connect       anemochore.github.io
 // ==/UserScript==
 
 // ver 0.1 @ 2019-12-09
@@ -18,6 +19,8 @@
 //    activates only when the focus is on 'body'
 // ver 0.4 @ 2019-12-21
 //    setting 'paramWithoutEqual' added
+// ver 0.4b @ 2019-12-21
+//    replaced fetch() with GM_xmlhttpRequest() to bypass SOP
 
 
 //(() => {
@@ -26,99 +29,105 @@
     let isSpace = false;
     if('key' in evt) isSpace = (evt.key == ' ' || evt.key == 'Spacebar');
     else isSpace = (evt.code == 32);
-    
+
     let isFocusOnBody = false;
     let curEl = document.activeElement;
     if(curEl && curEl.tagName.toLowerCase() == 'body') isFocusOnBody = true;
 
     if(isSpace && isFocusOnBody && window.innerHeight + window.pageYOffset >= document.body.scrollHeight) {
       //init
-      fetch('https://anemochore.github.io/please-space-next-auto-pager/settings.json')
-      .then(response => response.json())
-      .then(SETTING => {
+      GM_xmlhttpRequest({
+        method: 'GET',
+        url: 'https://anemochore.github.io/please-space-next-auto-pager/settings.json',
+        onload: function(response) {
+          const SETTING = JSON.parse(response.responseText);
 
-        //fuzzy settings
-        let FUZZY = [];
-        FUZZY = [
-          'page',        //not used for now
-        ];  //todo
+          //fuzzy settings
+          let FUZZY = [];
+          FUZZY = [
+            'page',        //not used for now
+          ];  //todo
 
-        if(!setting) {
-          //fuzzy mode. todo
-          return;
-        }
-        else if(setting.isPageInTheURL) {
-          let curPage, nextPage, newUrl;
-          if(setting.param) {
-            let possibleParams = FUZZY.slice() || [];
-            if(setting.param && possibleParams.indexOf(setting.param) == -1)
-               possibleParams.unshift(setting.param);
-
-            let params = new URL(document.URL).searchParams;
-            let idx;
-            for(idx=0; idx<possibleParams.length; idx++) {
-              curPage = params.get(possibleParams[idx]);
-              if(curPage) break;
-            }
-
-            if(!curPage) {
-              nextPage = 2;
-              idx = 0;  //try first param only to prevent probably unsuccessful loading and checking. todo: ...
-            }
-            else {
-              nextPage = parseInt(curPage) + 1;
-            }
-            params.set(possibleParams[idx], nextPage);
-            newUrl = location.origin + location.pathname + '?' + params.toString(); //no error check
-          }
-          else if(setting.paramWithoutEqual) {
-            let pathname = new URL(document.URL).pathname;
-            if(pathname.indexOf(setting.paramWithoutEqual) > -1) {
-              nextPage = 2;
-              newUrl = location.origin + location.pathname + '/' + setting.paramWithoutEqual + nextPage;
-            }
-            else {
-              let pageIdx = pathname.indexOf(setting.paramWithoutEqual);
-              curPage = pathname.slice(pageIdx).slice(setting.paramWithoutEqual.length);
-              nextPage = parseInt(curPage) + 1;
-              newUrl = location.origin + pathname.slice(0, pageIdx) + setting.paramWithoutEqual + nextPage;
-            }
-          }
-
-          if(newUrl) window.location.href = newUrl;
-          return;
-        }
-        else if(!setting.isPageInTheURL) {
-          let curPage = ('curPage' in setting && setting.curPage);
-          let nextPageEl = ('nextPageEl' in setting && setting.nextPageEl);
-          if(curPage && nextPageEl) {
-            console.log('space next: both curPage and nextPageEl cannot be allowed. exit...');
+          let setting = SETTING[location.host];
+          if(!setting) {
+            //fuzzy mode. todo
             return;
           }
+          else if(setting.isPageInTheURL) {
+            let curPage, nextPage, newUrl;
+            if(setting.param) {
+              let possibleParams = FUZZY.slice() || [];
+              if(setting.param && possibleParams.indexOf(setting.param) == -1)
+                 possibleParams.unshift(setting.param);
 
-          let exec = 'click';
-          if(setting.func) {
-            exec = setting.func.trim();
-            if(exec.endsWith('()')) exec = exec.slice(0, -2);
-          }
+              let params = new URL(document.URL).searchParams;
+              let idx;
+              for(idx=0; idx<possibleParams.length; idx++) {
+                curPage = params.get(possibleParams[idx]);
+                if(curPage) break;
+              }
 
-          if(curPage) {
-            let target = document.querySelector(curPage);
-            let nextPage;
-            if('value' in target) 
-              nextPage = parseInt(target.value) + 1;
-            else 
-              nextPage = parseInt(target.innerText) + 1;
-            let func = eval(exec);
-            func(nextPage);
+              if(!curPage) {
+                nextPage = 2;
+                idx = 0;  //try first param only to prevent probably unsuccessful loading and checking. todo: ...
+              }
+              else {
+                nextPage = parseInt(curPage) + 1;
+              }
+              params.set(possibleParams[idx], nextPage);
+              newUrl = location.origin + location.pathname + '?' + params.toString(); //no error check
+            }
+            else if(setting.paramWithoutEqual) {
+              let pathname = new URL(document.URL).pathname;
+              if(pathname.indexOf(setting.paramWithoutEqual) == -1) {
+                nextPage = 2;
+                newUrl = location.origin + location.pathname + '/' + setting.paramWithoutEqual + nextPage;
+              }
+              else {
+                let pageIdx = pathname.indexOf(setting.paramWithoutEqual);
+                curPage = pathname.slice(pageIdx).slice(setting.paramWithoutEqual.length);
+                nextPage = parseInt(curPage) + 1;
+                console.log(curPage, nextPage);
+                newUrl = location.origin + pathname.slice(0, pageIdx) + setting.paramWithoutEqual + nextPage;
+              }
+            }
+
+            if(newUrl) window.location.href = newUrl;
+            return;
           }
-          else {
-            let target = document.querySelector(nextPageEl);
-            let func = target[exec];
-            func.apply(target);
+          else if(!setting.isPageInTheURL) {
+            let curPage = ('curPage' in setting && setting.curPage);
+            let nextPageEl = ('nextPageEl' in setting && setting.nextPageEl);
+            if(curPage && nextPageEl) {
+              console.log('space next: both curPage and nextPageEl cannot be allowed. exit...');
+              return;
+            }
+
+            let exec = 'click';
+            if(setting.func) {
+              exec = setting.func.trim();
+              if(exec.endsWith('()')) exec = exec.slice(0, -2);
+            }
+
+            if(curPage) {
+              let target = document.querySelector(curPage);
+              let nextPage;
+              if('value' in target) 
+                nextPage = parseInt(target.value) + 1;
+              else 
+                nextPage = parseInt(target.innerText) + 1;
+              let func = eval(exec);
+              func(nextPage);
+            }
+            else {
+              let target = document.querySelector(nextPageEl);
+              let func = target[exec];
+              func.apply(target);
+            }
           }
         }
       });
+
     }
 
   };
