@@ -89,7 +89,6 @@
                 let pageIdx = pathname.indexOf(setting.paramWithoutEqual);
                 curPage = pathname.slice(pageIdx).slice(setting.paramWithoutEqual.length);
                 nextPage = parseInt(curPage) + 1;
-                console.log(curPage, nextPage);
                 newUrl = location.origin + pathname.slice(0, pageIdx) + setting.paramWithoutEqual + nextPage;
               }
             }
