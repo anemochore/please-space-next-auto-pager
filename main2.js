@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://anemochore.github.io/please-space-next-auto-pager/
-// @version       0.4b
+// @version       0.5
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -21,6 +21,8 @@
 //    setting 'paramWithoutEqual' added
 // ver 0.4b @ 2019-12-21
 //    replaced fetch() with GM_xmlhttpRequest() to bypass SOP
+// ver 0.5 @ 2019-12-21
+//    small edit to see how auto-update works
 
 
 //(() => {
@@ -96,8 +98,8 @@
             return;
           }
           else if(!setting.isPageInTheURL) {
-            let curPage = ('curPage' in setting && setting.curPage);
-            let nextPageEl = ('nextPageEl' in setting && setting.nextPageEl);
+            let curPage = setting.curPage;
+            let nextPageEl = setting.nextPageEl;
             if(curPage && nextPageEl) {
               console.log('space next: both curPage and nextPageEl cannot be allowed. exit...');
               return;
@@ -112,7 +114,7 @@
             if(curPage) {
               let target = document.querySelector(curPage);
               let nextPage;
-              if('value' in target) 
+              if(target.value) 
                 nextPage = parseInt(target.value) + 1;
               else 
                 nextPage = parseInt(target.innerText) + 1;
