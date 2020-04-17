@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://anemochore.github.io/please-space-next-auto-pager/
-// @version       0.5
+// @version       0.5.1
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
