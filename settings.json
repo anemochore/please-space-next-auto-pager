@@ -56,12 +56,16 @@
     "isPageInTheURL": true,
     "param": "page"
   },
-    "relizm.com": {
+  "relizm.com": {
     "isPageInTheURL": true,
     "param": "page"
   },
-    "www.flickr.com": {
+  "www.flickr.com": {
     "isPageInTheURL": true,
     "paramWithoutEqual": "page"
+  },
+  "toonsarang.tools": {
+    "isPageInTheURL": false,
+    "nextPageEl": "i.fa-arrow-circle-right"
   }
 }
