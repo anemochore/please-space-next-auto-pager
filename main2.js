@@ -23,6 +23,8 @@
 //    replaced fetch() with GM_xmlhttpRequest() to bypass SOP
 // ver 0.5 @ 2019-12-21
 //    small edit to see how auto-update works
+// ver 0.5b @ 2020-04-18
+//    small fix
 
 
 //(() => {
@@ -36,7 +38,7 @@
     let curEl = document.activeElement;
     if(curEl && curEl.tagName.toLowerCase() == 'body') isFocusOnBody = true;
 
-    if(isSpace && isFocusOnBody && window.innerHeight + window.pageYOffset >= document.body.scrollHeight) {
+    if(isSpace && isFocusOnBody && window.innerHeight + window.pageYOffset + 1 >= document.body.scrollHeight) {
       //init
       GM_xmlhttpRequest({
         method: 'GET',
