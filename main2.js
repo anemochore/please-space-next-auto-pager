@@ -23,7 +23,7 @@
 //    replaced fetch() with GM_xmlhttpRequest() to bypass SOP
 // ver 0.5 @ 2019-12-21
 //    small edit to see how auto-update works
-// ver 0.5b @ 2020-04-18
+// ver 0.5.1 @ 2020-04-18
 //    small fix
 
 
