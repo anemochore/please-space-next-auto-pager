@@ -40,6 +40,11 @@
     "curPage": "strong.on",
     "func": "fnCmdExampleList()"
   },
+  "stdict.korean.go.kr": {
+    "isPageInTheURL": false,
+    "curPage": "span.on",
+    "func": "fnSearch()"
+  },
   "www.ebay.com": {
     "isPageInTheURL": true,
     "param": "_pgn"
