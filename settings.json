@@ -13,6 +13,10 @@
     "isPageInTheURL": true,
     "param": "pagingIndex"
   },
+  "smartstore.naver.com": {
+    "isPageInTheURL": true,
+    "param": "page"
+  },
   "prod.danawa.com": {
     "isPageInTheURL": false,
     "curPage": "a[onclick=\"return false\"]",
