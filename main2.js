@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://anemochore.github.io/please-space-next-auto-pager/
-// @version       0.5.2
+// @version       0.5.3
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -28,6 +28,8 @@
 //    small fix
 // ver 0.5.2 @ 2020-11-07
 //    works regardless of www in url
+// ver 0.5.3 @ 2021-10-05
+//    fixed a bug that wrongly decodes url when url contains url-encoded strings (like non-latin query strings)
 
 
 document.onkeydown = evt => {
@@ -74,7 +76,8 @@ document.onkeydown = evt => {
         if(setting.param && possibleParams.indexOf(setting.param) == -1)
            possibleParams.unshift(setting.param);
 
-        let params = new URL(document.URL).searchParams;
+        const url = new URL(document.URL);
+        const params = url.searchParams;
         let idx;
         for(idx=0; idx<possibleParams.length; idx++) {
           curPage = params.get(possibleParams[idx]);
@@ -88,8 +91,12 @@ document.onkeydown = evt => {
         else {
           nextPage = parseInt(curPage) + 1;
         }
-        params.set(possibleParams[idx], nextPage);
-        newUrl = location.origin + location.pathname + '?' + params.toString(); //no error check
+
+        //params.toString() won't work when url contains url-encoded strings (like non-latin query strings)
+        let search = url.search;
+        if(search.trim().endsWith('&')) search = search.slice(0, -1)
+        const paramsString = url.search + '&' + possibleParams[idx] + '=' + nextPage;
+        newUrl = location.origin + location.pathname + '?' + paramsString;
       }
       else if(setting.paramWithoutEqual) {
         let pathname = new URL(document.URL).pathname;
