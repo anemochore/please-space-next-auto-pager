@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://anemochore.github.io/please-space-next-auto-pager/
-// @version       0.5.4
+// @version       0.5.5
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -32,6 +32,8 @@
 //    fixed a bug that wrongly decodes url when url contains url-encoded strings (like non-latin query strings)
 // ver 0.5.4 @ 2021-10-22
 //    fixed a bug of v0.5.3
+// ver 0.5.5 @ 2021-11-9
+//    fixed a bug of v0.5.4 (non-working when on first page)
 
 
 document.onkeydown = evt => {
@@ -98,7 +100,8 @@ document.onkeydown = evt => {
         let search = url.search;
         const reg = new RegExp(`(&|\\?)${possibleParams[idx]}=${curPage}(&?)`);
         const matches = search.match(reg);
-        if(matches[2])
+
+        if(matches && matches[2])
           search = search.replace(reg, '&');
         else
           search = search.replace(reg, '');
