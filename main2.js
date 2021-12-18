@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://anemochore.github.io/please-space-next-auto-pager/
-// @version       0.5.5
+// @version       0.5.6
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -34,6 +34,8 @@
 //    fixed a bug of v0.5.3
 // ver 0.5.5 @ 2021-11-9
 //    fixed a bug of v0.5.4 (non-working when on first page)
+// ver 0.5.6 @ 2021-12-18
+//    added a small guard code for v 0.5.3
 
 
 document.onkeydown = evt => {
@@ -106,7 +108,7 @@ document.onkeydown = evt => {
         else
           search = search.replace(reg, '');
 
-        if(search.trim().endsWith('&')) search = search.slice(0, -1);
+        if(search.trim().endsWith('&')) search = search.trim().slice(0, -1);
         const paramsString = search + '&' + possibleParams[idx] + '=' + nextPage;
         newUrl = location.origin + location.pathname + paramsString;
         console.log(newUrl);
