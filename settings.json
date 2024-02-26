@@ -39,7 +39,7 @@
     "isPageInTheURL": true,
     "param": "p"
   },
-  "kornorms.korean.go.kr": {
+  "korean.go.kr/kornorms": {
     "isPageInTheURL": false,
     "curPage": "strong.on",
     "func": "fnCmdExampleList()"

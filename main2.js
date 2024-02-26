@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://anemochore.github.io/please-space-next-auto-pager/
-// @version       0.5.6
+// @version       0.5.7
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -36,6 +36,8 @@
 //    fixed a bug of v0.5.4 (non-working when on first page)
 // ver 0.5.6 @ 2021-12-18
 //    added a small guard code for v 0.5.3
+// ver 0.5.7 @ 2024-02-26
+//    changed kornorms.korean.go.kr to korean.go.kr/kornorms
 
 
 document.onkeydown = evt => {
@@ -61,18 +63,20 @@ document.onkeydown = evt => {
     let host = location.host;
     let setting = SETTING[host];
 
-    if(!host.startsWith('www.') && !setting) {
-      host = 'www.' + host;
+    if(!setting) {
+      host = host + '/' + location.pathname.split('/')[1];
       setting = SETTING[host];
     }
-    else if(host.startsWith('www.') && !setting) {
-      host = host.slice(4);
+
+    if(!setting) {
+      if(!host.startsWith('www.')) host = 'www.' + host;
+      else host = host.slice(4);
       setting = SETTING[host];
     }
 
     if(!setting) {
       //fuzzy mode. todo
-      console.info('this site is not included in setting.json');
+      console.info('this site is not included in settings.json');
       return;
     }
     else if(setting.isPageInTheURL) {
