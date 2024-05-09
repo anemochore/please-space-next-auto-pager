@@ -39,7 +39,7 @@
 // ver 0.5.7 @ 2024-02-26
 //    changed kornorms.korean.go.kr to korean.go.kr/kornorms
 // ver 0.5.10 @ 2024-05-09
-//    fixed both & and ? support
+//    fixed both & and ? support 
 
 
 document.onkeydown = evt => {
