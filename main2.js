@@ -38,7 +38,7 @@
 //    added a small guard code for v 0.5.3
 // ver 0.5.7 @ 2024-02-26
 //    changed kornorms.korean.go.kr to korean.go.kr/kornorms
-// ver 0.5.9 @ 2024-05-09
+// ver 0.5.10 @ 2024-05-09
 //    fixed both & and ? support
 
 
@@ -113,8 +113,9 @@ document.onkeydown = evt => {
             matches = search.match(reg);
             if(matches) isQuestionMark = true;
           }
+          console.log(matches, search);
 
-          if(matches && matches[2]) search = search.replace(reg, '&');
+          if(matches && matches[1]) search = search.replace(reg, '&');
           else                      search = search.replace(reg, '');
 
           nextPage = parseInt(curPage) + 1;
@@ -123,7 +124,7 @@ document.onkeydown = evt => {
         if(search.trim().endsWith('&')) search = search.trim().slice(0, -1);
         const paramsString = search + (isQuestionMark ? '?' : '&') + possibleParams[idx] + '=' + nextPage;
         newUrl = location.origin + location.pathname + paramsString;
-        console.log(search, location.pathname, paramsString, newUrl);
+        console.log(isQuestionMark, search, location.pathname, paramsString);
       }
       else if(setting.paramWithoutEqual) {
         let pathname = new URL(document.URL).pathname;
