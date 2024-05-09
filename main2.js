@@ -38,7 +38,7 @@
 //    added a small guard code for v 0.5.3
 // ver 0.5.7 @ 2024-02-26
 //    changed kornorms.korean.go.kr to korean.go.kr/kornorms
-// ver 0.5.8 @ 2024-05-09
+// ver 0.5.9 @ 2024-05-09
 //    fixed both & and ? support
 
 
@@ -96,31 +96,34 @@ document.onkeydown = evt => {
           if(curPage) break;
         }
 
+        let search = url.search, isQuestionMark = false;
+
         if(!curPage) {
           nextPage = 2;
           idx = 0;  //try first param only to prevent probably unsuccessful loading and checking. todo: ...
+          
+          if(search == "") isQuestionMark = true;
         }
         else {
+          //params.toString() won't work when url contains url-encoded strings (like non-latin query strings)
+          let reg = new RegExp(`&${possibleParams[idx]}=${curPage}(&?)`);
+          let matches = search.match(reg);
+          if(!matches) {
+            reg = new RegExp(`\\?${possibleParams[idx]}=${curPage}(&?)`);
+            matches = search.match(reg);
+            if(matches) isQuestionMark = true;
+          }
+
+          if(matches && matches[2]) search = search.replace(reg, '&');
+          else                      search = search.replace(reg, '');
+
           nextPage = parseInt(curPage) + 1;
         }
-
-        //params.toString() won't work when url contains url-encoded strings (like non-latin query strings)
-        let search = url.search, isQuestionMark = false;
-        let reg = new RegExp(`&${possibleParams[idx]}=${curPage}(&?)`);
-        let matches = search.match(reg);
-        if(!matches) {
-          reg = new RegExp(`\\?${possibleParams[idx]}=${curPage}(&?)`);
-          matches = search.match(reg);
-          if(matches) isQuestionMark = true;
-        }
-
-        if(matches && matches[2]) search = search.replace(reg, '&');
-        else                      search = search.replace(reg, '');
 
         if(search.trim().endsWith('&')) search = search.trim().slice(0, -1);
         const paramsString = search + (isQuestionMark ? '?' : '&') + possibleParams[idx] + '=' + nextPage;
         newUrl = location.origin + location.pathname + paramsString;
-        console.log(reg, search, location.pathname, paramsString, newUrl);
+        console.log(search, location.pathname, paramsString, newUrl);
       }
       else if(setting.paramWithoutEqual) {
         let pathname = new URL(document.URL).pathname;
