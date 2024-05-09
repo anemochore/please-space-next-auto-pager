@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://anemochore.github.io/please-space-next-auto-pager/
-// @version       0.5.7
+// @version       0.5.8
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
-// @updateURL     https://raw.githubusercontent.com/anemochore/please-space-next-auto-pager/master/main2.js
-// @downloadURL   https://raw.githubusercontent.com/anemochore/please-space-next-auto-pager/master/main2.js
+// @updateURL     https://anemochore.github.io/please-space-next-auto-pager/main2.js
+// @downloadURL   https://anemochore.github.io/please-space-next-auto-pager/main2.js
 // @grant         GM_getResourceText
-// @resource      SETTING https://raw.githubusercontent.com/anemochore/please-space-next-auto-pager/master/settings.json
+// @resource      SETTING https://anemochore.github.io/please-space-next-auto-pager/settings.json
 // ==/UserScript==
 
 
@@ -38,6 +38,8 @@
 //    added a small guard code for v 0.5.3
 // ver 0.5.7 @ 2024-02-26
 //    changed kornorms.korean.go.kr to korean.go.kr/kornorms
+// ver 0.5.8 @ 2024-05-09
+//    fixed both & and ? support
 
 
 document.onkeydown = evt => {
@@ -103,19 +105,22 @@ document.onkeydown = evt => {
         }
 
         //params.toString() won't work when url contains url-encoded strings (like non-latin query strings)
-        let search = url.search;
-        const reg = new RegExp(`(&|\\?)${possibleParams[idx]}=${curPage}(&?)`);
-        const matches = search.match(reg);
+        let search = url.search, isQuestionMark = false;
+        let reg = new RegExp(`&${possibleParams[idx]}=${curPage}(&?)`);
+        let matches = search.match(reg);
+        if(!matches) {
+          reg = new RegExp(`\\?${possibleParams[idx]}=${curPage}(&?)`);
+          matches = search.match(reg);
+          if(matches) isQuestionMark = true;
+        }
 
-        if(matches && matches[2])
-          search = search.replace(reg, '&');
-        else
-          search = search.replace(reg, '');
+        if(matches && matches[2]) search = search.replace(reg, '&');
+        else                      search = search.replace(reg, '');
 
         if(search.trim().endsWith('&')) search = search.trim().slice(0, -1);
-        const paramsString = search + '&' + possibleParams[idx] + '=' + nextPage;
+        const paramsString = search + (isQuestionMark ? '?' : '&') + possibleParams[idx] + '=' + nextPage;
         newUrl = location.origin + location.pathname + paramsString;
-        console.log(newUrl);
+        console.log(reg, search, location.pathname, paramsString, newUrl);
       }
       else if(setting.paramWithoutEqual) {
         let pathname = new URL(document.URL).pathname;
