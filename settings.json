@@ -19,7 +19,7 @@
   },
   "prod.danawa.com": {
     "isPageInTheURL": false,
-    "curPage": "a[onclick=\"return false\"]",
+    "curPage": "div.number_wrap>a[onclick=\"return false\"]",
     "func": "movePage()"
   },
   "www.kyobobook.co.kr": {
