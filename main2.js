@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
-// @namespace     https://anemochore.github.io/please-space-next-auto-pager/
-// @version       0.5.8
+// @namespace     https://github.com/anemochore/please-space-next-auto-pager/
+// @version       0.6.0
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -55,12 +55,7 @@ document.onkeydown = evt => {
   if(isSpace && isFocusOnBody && window.innerHeight + window.pageYOffset + 1 >= document.body.scrollHeight) {
     //init
     const SETTING = JSON.parse(GM_getResourceText('SETTING'));
-
-    //fuzzy settings
-    let FUZZY = [];
-    FUZZY = [
-      'page',        //not used for now
-    ];  //todo
+    //let isFuzzyMode = false;
 
     let host = location.host;
     let setting = SETTING[host];
@@ -77,15 +72,17 @@ document.onkeydown = evt => {
     }
 
     if(!setting) {
-      //fuzzy mode. todo
-      console.info('this site is not included in settings.json');
-      return;
+      //fuzzy mode
+      console.log('this site is not included in settings.json. Fuzzy mode enabled.');
+      setting = SETTING['default'];
+      //isFuzzyMode = true;
     }
-    else if(setting.isPageInTheURL) {
+
+    if(setting.isPageInTheURL) {
       let curPage, nextPage, newUrl;
       if(setting.param) {
-        let possibleParams = FUZZY.slice() || [];
-        if(setting.param && possibleParams.indexOf(setting.param) == -1)
+        let possibleParams = [];
+        if(setting.param && !possibleParams.includes(setting.param))
            possibleParams.unshift(setting.param);
 
         const url = new URL(document.URL);
@@ -124,7 +121,7 @@ document.onkeydown = evt => {
         if(search.trim().endsWith('&')) search = search.trim().slice(0, -1);
         const paramsString = search + (isQuestionMark ? '?' : '&') + possibleParams[idx] + '=' + nextPage;
         newUrl = location.origin + location.pathname + paramsString;
-        console.log(isQuestionMark, search, location.pathname, paramsString);
+        console.log('result1:', isQuestionMark, search, location.pathname, paramsString);
       }
       else if(setting.paramWithoutEqual) {
         let pathname = new URL(document.URL).pathname;
@@ -138,6 +135,7 @@ document.onkeydown = evt => {
           nextPage = parseInt(curPage) + 1;
           newUrl = location.origin + pathname.slice(0, pageIdx) + setting.paramWithoutEqual + nextPage;
         }
+        console.log('result2:', newUrl);
       }
 
       if(newUrl) window.location.href = newUrl;

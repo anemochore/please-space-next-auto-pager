@@ -1,5 +1,7 @@
 {
   "default": {
+    "isPageInTheURL": true,
+    "param": "page"
   },
   "www.google.com": {
     "isPageInTheURL": false,
