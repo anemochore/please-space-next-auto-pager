@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://github.com/anemochore/please-space-next-auto-pager/
-// @version       0.6.0
+// @version       0.6.1
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -20,26 +20,12 @@
 //    activates only when the focus is on 'body'
 // ver 0.4 @ 2019-12-21
 //    setting 'paramWithoutEqual' added
-// ver 0.4b @ 2019-12-21
-//    replaced fetch() with GM_xmlhttpRequest() to bypass SOP
 // ver 0.5 @ 2019-12-21
 //    small edit to see how auto-update works
-// ver 0.5.1 @ 2020-04-18
-//    small fix
-// ver 0.5.2 @ 2020-11-07
-//    works regardless of www in url
-// ver 0.5.3 @ 2021-10-05
-//    fixed a bug that wrongly decodes url when url contains url-encoded strings (like non-latin query strings)
-// ver 0.5.4 @ 2021-10-22
-//    fixed a bug of v0.5.3
-// ver 0.5.5 @ 2021-11-9
-//    fixed a bug of v0.5.4 (non-working when on first page)
-// ver 0.5.6 @ 2021-12-18
-//    added a small guard code for v 0.5.3
-// ver 0.5.7 @ 2024-02-26
-//    changed kornorms.korean.go.kr to korean.go.kr/kornorms
-// ver 0.5.10 @ 2024-05-09
-//    fixed both & and ? support 
+// ver 0.6.0 @ 2024-10-04
+//    add rough fuzzy mode
+// ver 0.6.1 @ 2024-10-07
+//    wrap-up
 
 
 document.onkeydown = evt => {
@@ -81,7 +67,7 @@ document.onkeydown = evt => {
     if(setting.isPageInTheURL) {
       let curPage, nextPage, newUrl;
       if(setting.param) {
-        let possibleParams = [];
+        
         if(setting.param && !possibleParams.includes(setting.param))
            possibleParams.unshift(setting.param);
 
