@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://github.com/anemochore/please-space-next-auto-pager/
-// @version       0.6.1
+// @version       0.6.2
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -26,6 +26,8 @@
 //    add rough fuzzy mode
 // ver 0.6.1 @ 2024-10-07
 //    wrap-up
+// ver 0.6.2 @ 2024-10-07
+//    fix bug
 
 
 document.onkeydown = evt => {
@@ -64,6 +66,7 @@ document.onkeydown = evt => {
       //isFuzzyMode = true;
     }
 
+    const possibleParams = [];
     if(setting.isPageInTheURL) {
       let curPage, nextPage, newUrl;
       if(setting.param) {
