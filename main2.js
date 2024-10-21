@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://github.com/anemochore/please-space-next-auto-pager/
-// @version       0.6.2
+// @version       0.6.3
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -24,10 +24,8 @@
 //    small edit to see how auto-update works
 // ver 0.6.0 @ 2024-10-04
 //    add rough fuzzy mode
-// ver 0.6.1 @ 2024-10-07
-//    wrap-up
-// ver 0.6.2 @ 2024-10-07
-//    fix bug
+// ver 0.6.3 @ 2024-10-21
+//    fuzzy mode: if known param is already in url, use it. So, proceed to page 2 manually, then viola!
 
 
 document.onkeydown = evt => {
@@ -59,20 +57,24 @@ document.onkeydown = evt => {
       setting = SETTING[host];
     }
 
+    let possibleParams = [];
     if(!setting) {
       //fuzzy mode
       console.log('this site is not included in settings.json. Fuzzy mode enabled.');
       setting = SETTING['default'];
       //isFuzzyMode = true;
+
+      if(SETTING['knownParams']) possibleParams = Object.values(SETTING['knownParams'])
+      .reduce((a, b) => a.flatMap(x => b.map(y => x + y)), ['']);  // https://stackoverflow.com/a/61890694/6153990
+      console.log('possibleParams:', possibleParams);
     }
 
-    const possibleParams = [];
     if(setting.isPageInTheURL) {
       let curPage, nextPage, newUrl;
       if(setting.param) {
-        
+
         if(setting.param && !possibleParams.includes(setting.param))
-           possibleParams.unshift(setting.param);
+          possibleParams.unshift(setting.param);
 
         const url = new URL(document.URL);
         const params = url.searchParams;
@@ -85,9 +87,10 @@ document.onkeydown = evt => {
         let search = url.search, isQuestionMark = false;
 
         if(!curPage) {
+          console.log('no possible param found :(');
           nextPage = 2;
           idx = 0;  //try first param only to prevent probably unsuccessful loading and checking. todo: ...
-          
+
           if(search == "") isQuestionMark = true;
         }
         else {
@@ -99,7 +102,7 @@ document.onkeydown = evt => {
             matches = search.match(reg);
             if(matches) isQuestionMark = true;
           }
-          console.log(matches, search);
+          console.log('match:', matches, search);
 
           if(matches && matches[1]) search = search.replace(reg, '&');
           else                      search = search.replace(reg, '');
@@ -147,9 +150,9 @@ document.onkeydown = evt => {
       if(curPage) {
         let target = document.querySelector(curPage);
         let nextPage;
-        if(target.value) 
+        if(target.value)
           nextPage = parseInt(target.value) + 1;
-        else 
+        else
           nextPage = parseInt(target.innerText) + 1;
         let func = eval(exec);
         func(nextPage);

@@ -1,4 +1,9 @@
 {
+  "knownParams": {
+    "prefix": ["page"],
+    "delimiter": ["", "_"],
+    "suffix": ["Number", "index"]
+  },
   "default": {
     "isPageInTheURL": true,
     "param": "page"
