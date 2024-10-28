@@ -17,8 +17,8 @@
     "nextPageEl": "a.next"
   },
   "search.shopping.naver.com": {
-    "isPageInTheURL": true,
-    "param": "pagingIndex"
+    "isPageInTheURL": false,
+    "nextPageEl": "a[class^=\"pagination_next__\"]"
   },
   "smartstore.naver.com": {
     "isPageInTheURL": true,
