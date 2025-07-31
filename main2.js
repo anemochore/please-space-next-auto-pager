@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://github.com/anemochore/please-space-next-auto-pager/
-// @version       0.6.4
+// @version       0.6.5
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -26,7 +26,8 @@
 //    add rough fuzzy mode
 // ver 0.6.3 @ 2024-10-21
 //    fuzzy mode: if known param is already in url, use it. So, proceed to page 2 manually, then viola!
-
+// ver 0.6.5 @ 2025-07-30
+//    fix triggering in iframes
 
 document.onkeydown = evt => {
   evt = evt || window.event;
@@ -35,8 +36,9 @@ document.onkeydown = evt => {
   else isSpace = (evt.code == 32);
 
   let isFocusOnBody = false;
-  let curEl = document.activeElement;
-  if(curEl && curEl.tagName.toLowerCase() == 'body') isFocusOnBody = true;
+  const curEl = document.activeElement;
+  if(window.self == window.top && curEl?.tagName == 'BODY') isFocusOnBody = true;
+  console.debug('isFocusOnBody', isFocusOnBody);
 
   if(isSpace && isFocusOnBody && window.innerHeight + window.pageYOffset + 1 >= document.body.scrollHeight) {
     //init
