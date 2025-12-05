@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          please space next auto pager
 // @namespace     https://github.com/anemochore/please-space-next-auto-pager/
-// @version       0.6.5
+// @version       0.6.6
 // @description   press space at the end of page to load next page
 // @author        fallensky@naver.com
 // @include       *
@@ -28,6 +28,8 @@
 //    fuzzy mode: if known param is already in url, use it. So, proceed to page 2 manually, then viola!
 // ver 0.6.5 @ 2025-07-30
 //    fix triggering in iframes
+// ver 0.6.6 @ 2025-11-03
+//    remove debug
 
 document.onkeydown = evt => {
   evt = evt || window.event;
@@ -38,7 +40,7 @@ document.onkeydown = evt => {
   let isFocusOnBody = false;
   const curEl = document.activeElement;
   if(window.self == window.top && curEl?.tagName == 'BODY') isFocusOnBody = true;
-  console.debug('isFocusOnBody', isFocusOnBody);
+  //console.debug('isFocusOnBody', isFocusOnBody);
 
   if(isSpace && isFocusOnBody && window.innerHeight + window.pageYOffset + 1 >= document.body.scrollHeight) {
     //init
@@ -115,7 +117,7 @@ document.onkeydown = evt => {
         if(search.trim().endsWith('&')) search = search.trim().slice(0, -1);
         const paramsString = search + (isQuestionMark ? '?' : '&') + possibleParams[idx] + '=' + nextPage;
         newUrl = location.origin + location.pathname + paramsString;
-        console.log('result1:', isQuestionMark, search, location.pathname, paramsString);
+        console.debug('result1:', isQuestionMark, search, location.pathname, paramsString);
       }
       else if(setting.paramWithoutEqual) {
         let pathname = new URL(document.URL).pathname;
@@ -129,7 +131,7 @@ document.onkeydown = evt => {
           nextPage = parseInt(curPage) + 1;
           newUrl = location.origin + pathname.slice(0, pageIdx) + setting.paramWithoutEqual + nextPage;
         }
-        console.log('result2:', newUrl);
+        console.debug('result2:', newUrl);
       }
 
       if(newUrl) window.location.href = newUrl;
